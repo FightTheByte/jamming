@@ -1,2 +1,3 @@
-Jamming test app
+Jamming
 ================
+ **a spotify playlist maker**
