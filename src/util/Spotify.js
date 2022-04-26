@@ -1,10 +1,7 @@
-<<<<<<< HEAD
+
 const clientId = '012f2dbae619428c88ca6c065e34ce1d';
 const redirectURI = 'http://localhost:3000';
-=======
-const clientId = //enter your own id.
-const redirectUri = 'http://localhost:3000';
->>>>>>> 7fb11f7b583fc66e231042e77e08e33e04859e29
+
 
 let accessToken;
 let expiresIn;
