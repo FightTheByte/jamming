@@ -1,27 +1,22 @@
 const clientId = '012f2dbae619428c88ca6c065e34ce1d';
-const redirectUri = 'http://localhost:3000';
+const redirectURI = 'http://localhost:3000';
 
-let accessToken = '';
+let accessToken;
+let expiresIn;
 
 const Spotify = {
-    getAccessToken(){
-        if(accessToken !== ''){
-            return accessToken;
-        }
-        const accessTokenMatch = window.location.href.match(/access_token=([^&]*)/);
-        const expiresInMatch = window.location.href.match(/expires_in=([^&]*)/);
-    
-        if(accessTokenMatch && expiresInMatch){
-            accessToken = accessTokenMatch[1];
-            const expiresIn = Number(expiresInMatch);
-            window.setTimeout(() => accessToken = '', expiresIn * 1000);
-            window.history.pushState('Access Token', null, '/');
-            return accessToken;
-        } else {
-            const accessURL = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&scope=playlist-modify-public&redirect_uri=${redirectUri}`;
-            window.location = accessURL;
-        }
-    },
+    getAccessToken() {
+		if(accessToken) {
+			return accessToken;
+		} else if (window.location.href.match(/access_token=([^&]*)/) != null){
+			accessToken = window.location.href.match(/access_token=([^&]*)/)[1];
+			expiresIn = window.location.href.match(/expires_in=([^&]*)/)[1];
+			window.setTimeout(() => accessToken = '', expiresIn * 1000);
+			window.history.pushState('Access Token', null, '/');
+		} else {
+			window.location = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&scope=playlist-modify-public&redirect_uri=${redirectURI}`;
+		}
+	},
 
     search(term) {
         const accessToken = Spotify.getAccessToken();
@@ -40,20 +35,20 @@ const Spotify = {
                 name: track.name,
                 artist: track.artists[0].name,
                 album: track.album.name,
-                uri: track.uri
+                uri: track.uri,
+                preview: track.preview_url
             }));
         });
     },
 
     savePlaylist(playlistName, trackURIs) {
-            
-        if(!playlistName || !trackURIs.length){
+        
+         if(!playlistName || !trackURIs.length){
             return;
         }
 
-        
-        const accessToken =Spotify.getAccessToken();
-        
+        const accessToken = Spotify.getAccessToken();
+        console.log(`playlistName: ${playlistName}`, `track URI's: ${trackURIs}`, `access Token: ${accessToken}`) 
         
         let userID;
 
@@ -82,7 +77,7 @@ const Spotify = {
                 method: 'POST',
                 body: JSON.stringify({uris: trackURIs})
             })
-        })
+        }) 
     }
        
     

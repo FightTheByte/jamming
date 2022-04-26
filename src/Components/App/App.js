@@ -6,6 +6,7 @@ import {SearchResults} from '../Searchresults/Searchresults.js';
 import Spotify from '../../util/Spotify.js';
 
 
+
 export class App extends React.Component{
     constructor(props){
         super(props);
@@ -56,7 +57,9 @@ export class App extends React.Component{
     }
     
     render(){
+       Spotify.getAccessToken()
        return (
+           
             <div>
                 <h1>Ja<span className="highlight">mmm</span>ing</h1>
                 <div className="App">
@@ -77,6 +80,7 @@ export class App extends React.Component{
                     />
                     </div>
                 </div>
+                
             </div>
         )
     }
